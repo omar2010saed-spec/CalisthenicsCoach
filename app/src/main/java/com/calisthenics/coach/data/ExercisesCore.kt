@@ -31,7 +31,7 @@ internal val coreExercises: List<Exercise> = listOf(
     ),
     ex(
         "reverse_crunch", "Reverse Crunch", "كرنش عكسي", Muscle.ABS, "الجذع السفلي", 2, 2, 3, 10, 45,
-        Anim(Poses.LEGS_LOW, Poses.LEGS_UP),
+        Anim(Poses.LEGS_UP, Poses.REV_UP),
         "استلقِ على الظهر، اليدان بجانبك، الركبتان مثنيتان وقدماك مرفوعتان قليلًا.",
         listOf(
             "ارفع الوركين عن الأرض بتقريب الركبتين من الصدر.",
@@ -57,7 +57,7 @@ internal val coreExercises: List<Exercise> = listOf(
     ),
     ex(
         "leg_raise", "Lying Leg Raise", "رفع الرجلين من الاستلقاء", Muscle.ABS, "الورك، الجذع", 3, 3, 3, 8, 60,
-        Anim(Poses.LYING, Poses.LEGS_UP),
+        Anim(Poses.LYING, Poses.LEGS_STRAIGHT_UP),
         "استلقِ على الظهر، اليدان تحت الحوض أو بجانبك، الرجلان مفرودتان.",
         listOf(
             "ارفع الرجلين مفرودتين (أو بركبتين مثنيتين قليلًا) حتى 90°.",
@@ -180,7 +180,7 @@ internal val coreExercises: List<Exercise> = listOf(
     // ---------------- إحماء ----------------
     ex(
         "arm_circles", "Arm Circles", "دوائر الذراعين", Muscle.SHOULDERS, "أعلى الظهر", 1, 1, 1, 30, 10,
-        Anim(Poses.ARMS_OUT, Poses.ARMS_UP),
+        Anim(Poses.ARMS_FRONT, Poses.ARMS_UP),
         "قف باستقامة والذراعان ممدودتان للجانبين.",
         listOf("ارسم دوائر صغيرة للأمام لمدة 15 ثانية.", "كبّر الدوائر تدريجيًا.", "اعكس الاتجاه لباقي الوقت."),
         listOf("رفع الكتفين", "السرعة العالية"),
@@ -198,7 +198,7 @@ internal val coreExercises: List<Exercise> = listOf(
     ),
     ex(
         "hip_circles", "Hip Circles", "دوائر الورك", Muscle.HIPS, "أسفل الظهر", 1, 1, 1, 30, 10,
-        Anim(Poses.STAND, Poses.SQUAT_DOWN),
+        Anim(Poses.HIP_L, Poses.HIP_R),
         "قف والقدمان بعرض الكتفين واليدان على الخصر.",
         listOf("ارسم دوائر واسعة بالوركين في اتجاه واحد.", "بدّل الاتجاه بعد 15 ثانية.", "حافظ على الرأس والكتفين ثابتين."),
         listOf("تحريك الكتفين", "الحركة السريعة"),
@@ -216,7 +216,7 @@ internal val coreExercises: List<Exercise> = listOf(
     ),
     ex(
         "wrist_rotations", "Wrist Rotations", "دوران الرسغين", Muscle.FOREARMS, "اليد", 1, 1, 1, 30, 10,
-        Anim(Poses.TABLETOP, Poses.TABLETOP),
+        Anim(Poses.WRIST_A, Poses.WRIST_B),
         "اجلس أو قف وارفع الذراعين أمامك.",
         listOf("دوّر الرسغين دائريًا للأمام 15 ثانية.", "اعكس الاتجاه.", "حرّك الأصابع بلطف."),
         listOf("الحركة العنيفة"),
@@ -225,7 +225,7 @@ internal val coreExercises: List<Exercise> = listOf(
     ),
     ex(
         "leg_swings", "Leg Swings", "أرجحة الرجلين", Muscle.HIPS, "الفخذ الخلفي", 1, 1, 1, 10, 10,
-        Anim(Poses.STAND, Poses.LEG_BACK),
+        Anim(Poses.SWING_F, Poses.SWING_B),
         "قف بجانب حائط وأمسكه بيد واحدة للتوازن.",
         listOf("أرجِح رجلًا للأمام والخلف بتحكم.", "ابقِ الجذع ثابتًا.", "بدّل الرجل."),
         listOf("الأرجحة العنيفة", "إمالة الجذع"),
@@ -245,7 +245,7 @@ internal val coreExercises: List<Exercise> = listOf(
     ),
     ex(
         "chest_stretch", "Chest Stretch", "إطالة الصدر", Muscle.CHEST, "الكتف الأمامي", 1, 1, 1, 30, 5,
-        Anim(Poses.STAND, Poses.ARMS_OUT),
+        Anim(Poses.CHEST_A, Poses.CHEST_B),
         "قف باستقامة وشبّك اليدين خلف الظهر.",
         listOf("افرد الذراعين وارفعهما برفق للخلف.", "افتح الصدر.", "ثبّت وتنفّس."),
         listOf("تقوّس أسفل الظهر", "شد مؤلم"),
@@ -281,7 +281,7 @@ internal val coreExercises: List<Exercise> = listOf(
     ),
     ex(
         "hip_flexor_stretch", "Hip Flexor Stretch", "إطالة ثانيات الورك", Muscle.HIPS, "مقدمة الفخذ", 1, 1, 1, 30, 5,
-        Anim(Poses.LUNGE_DOWN, Poses.LUNGE_DOWN),
+        Anim(Poses.KNEEL_A, Poses.KNEEL_B),
         "اركع على ركبة واحدة والقدم الأخرى أمامك.",
         listOf("ادفع الحوض للأمام برفق.", "اشدد الأرداف قليلًا.", "ثبّت ثم بدّل."),
         listOf("تقوّس أسفل الظهر", "الدفع المفرط"),

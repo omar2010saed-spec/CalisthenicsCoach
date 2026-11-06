@@ -37,6 +37,7 @@ sealed class Route {
     data object Settings : Route()
     data object Nutrition : Route()
     data object Stages : Route()
+    data object PlanGuide : Route()
     data object Workout : Route()
     data class ExerciseDetail(val id: String) : Route()
     data class SkillDetail(val id: String) : Route()
@@ -133,6 +134,7 @@ fun CoachApp(vm: AppViewModel) {
                 Route.Settings -> SettingsScreen(vm, onBack = { back() })
                 Route.Nutrition -> NutritionScreen(onBack = { back() })
                 Route.Stages -> StagesScreen(vm, onBack = { back() })
+                Route.PlanGuide -> PlanGuideScreen(vm, onBack = { back() })
                 Route.Workout -> {
                     val s = vm.session
                     if (s == null) {

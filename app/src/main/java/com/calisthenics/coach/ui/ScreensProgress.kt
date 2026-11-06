@@ -329,10 +329,8 @@ fun StagesScreen(vm: AppViewModel, onBack: () -> Unit) {
                 Spacer8()
                 Text(st.summary, fontSize = 13.sp)
                 Spacer8()
-                Text("جدول الأسبوع", fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
-                st.schedule.forEachIndexed { i, label ->
-                    Text("${com.calisthenics.coach.logic.DAY_NAMES_SAT0[i]}: $label", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
+                Text("ترتيب الجلسات", fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+                Text(st.rotation.joinToString(" ← ") { it.ar }, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Spacer8()
                 Text("معايير التقدم", fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
                 BulletList(st.progression)

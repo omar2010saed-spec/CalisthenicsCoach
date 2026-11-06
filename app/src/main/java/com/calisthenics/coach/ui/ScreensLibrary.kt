@@ -95,7 +95,8 @@ fun ExerciseDetailScreen(id: String, state: AppState, onBack: () -> Unit, onOpen
 
     ScreenScaffold(e.ar, onBack) {
         Text(e.en, color = MaterialTheme.colorScheme.outline)
-        ExerciseIllustration(e, Modifier.fillMaxWidth().height(210.dp))
+        ExerciseIllustration(e, Modifier.fillMaxWidth())
+        VideoButton(e, Modifier.fillMaxWidth())
         Text(
             "الرسم توضيحي مبسط لمسار الحركة، اتبع الشرح المكتوب للتفاصيل.",
             fontSize = 11.sp,

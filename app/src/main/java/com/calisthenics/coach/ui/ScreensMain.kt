@@ -106,6 +106,13 @@ fun HomeScreen(vm: AppViewModel, onTrain: () -> Unit, onOpen: (Route) -> Unit) {
     val doneToday = s.workouts.any { it.dateKey == Dates.todayKey() }
     val weekStart = Dates.weekStartKey(java.util.Calendar.getInstance())
     val thisWeek = Progress.workoutsInWeek(s, weekStart)
+    val cycle = Progress.cycleInfo(s)
+    val sortedDays = s.trainingDays.sorted()
+    val doneBeforeWeek = s.workouts.count { it.dateKey < weekStart }
+    fun sessionLabel(day: Int): String {
+        val k = sortedDays.indexOf(day)
+        return if (k < 0) "راحة" else "تدريب: " + stage.rotation[(doneBeforeWeek + k) % stage.rotation.size].ar
+    }
 
     ScreenScaffold("الرئيسية") {
         AppCard {
@@ -143,9 +150,20 @@ fun HomeScreen(vm: AppViewModel, onTrain: () -> Unit, onOpen: (Route) -> Unit) {
             StatBox("${Progress.streakWeeks(s)}", "أسابيع التزام", Modifier.weight(1f))
         }
 
+        AppCard(onClick = { onOpen(Route.PlanGuide) }) {
+            Text("الأسبوع ${cycle.weekInBlock} من 4 في الدورة ${cycle.block + 1}", fontWeight = FontWeight.Bold)
+            Text(
+                if (cycle.deload) "أسبوع تخفيف مقصود: حجم أقل وبدون زيادة" else "أسبوع تقدم",
+                fontSize = 13.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer8()
+            Text("كيف تعمل خطتك وهل ستتغير؟ اضغط للشرح", fontSize = 12.sp, color = MaterialTheme.colorScheme.primary)
+        }
+
         SectionTitle("جدول الأسبوع")
         AppCard {
-            stage.schedule.forEachIndexed { i, label ->
+            DAY_NAMES_SAT0.forEachIndexed { i, _ ->
                 Row(Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         DAY_NAMES_SAT0[i],
@@ -154,7 +172,7 @@ fun HomeScreen(vm: AppViewModel, onTrain: () -> Unit, onOpen: (Route) -> Unit) {
                         color = if (i == today) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        if (i in s.trainingDays) "تدريب" else "راحة",
+                        sessionLabel(i),
                         modifier = Modifier.weight(0.65f),
                         color = if (i in s.trainingDays) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.outline
                     )
@@ -162,7 +180,7 @@ fun HomeScreen(vm: AppViewModel, onTrain: () -> Unit, onOpen: (Route) -> Unit) {
             }
             Spacer8()
             Text(
-                "أيام التدريب تتبع اختيارك في الإعدادات، ونوع كل جلسة يختاره المولّد تلقائيًا بالتناوب.",
+                "أيام التدريب من اختيارك في الإعدادات، ونوع كل جلسة يتبع ترتيب مرحلتك.",
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.outline
             )
@@ -198,9 +216,16 @@ fun TrainScreen(vm: AppViewModel, onStart: () -> Unit, onOpen: (Route) -> Unit) 
             val note = when {
                 s.planReadiness == 2 -> "بسبب الألم تم استبدال التمرين بجلسة حركة خفيفة وإطالة فقط. إن استمر الألم فأخبر شخصًا بالغًا أو استشر طبيبًا."
                 s.planReadiness == 1 || Generator.recoveryFlag(s) -> "تم تخفيف الحجم لأن التعافي ليس في أفضل حالاته، ولن تزداد الصعوبة الآن."
+                Progress.cycleInfo(s).deload -> "هذا أسبوع تخفيف (الأسبوع الرابع): حجم أقل وبدون زيادة، لتتعافى وتعود أقوى."
                 else -> "الخطة مبنية على مستواك الحالي ومدة جلستك (${s.sessionMinutes} دقيقة)."
             }
             Text(note, style = MaterialTheme.typography.bodyMedium)
+            if (s.planReadiness < 2) {
+                val type = Generator.nextSessionType(s)
+                Spacer8()
+                Text("جلسة اليوم: ${type.ar}", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                Text(type.desc, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
         }
 
         if (plan.isNotEmpty()) {

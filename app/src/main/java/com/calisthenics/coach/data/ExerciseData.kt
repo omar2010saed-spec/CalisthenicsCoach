@@ -31,6 +31,33 @@ object ExerciseData {
         Slot.LOWBACK to listOf("superman")
     )
 
+    /** Equivalent-level swaps used on alternate 4-week blocks so the plan does not stay identical forever. */
+    val variants: Map<String, String> = mapOf(
+        "reverse_snow_angel" to "superman",
+        "band_pullapart" to "prone_y_raise",
+        "prone_y_raise" to "band_pullapart",
+        "glute_bridge" to "donkey_kick",
+        "band_glute_bridge" to "donkey_kick",
+        "single_leg_bridge" to "band_glute_bridge",
+        "squat" to "wall_sit",
+        "reverse_lunge" to "split_squat",
+        "crunch" to "dead_bug",
+        "dead_bug" to "reverse_crunch",
+        "reverse_crunch" to "bicycle_crunch",
+        "bicycle_crunch" to "leg_raise",
+        "plank" to "bird_dog",
+        "bird_dog" to "plank",
+        "side_plank" to "shoulder_tap_plank",
+        "band_ext_rot" to "band_overhead_pullapart",
+        "pike_hold" to "band_overhead_pullapart",
+        "band_kickback" to "close_knee_pushup",
+        "diamond_pushup" to "close_knee_pushup",
+        "clamshell" to "fire_hydrant",
+        "fire_hydrant" to "band_lateral_walk",
+        "wrist_rocks" to "band_finger_ext",
+        "self_resist_curl" to "band_curl"
+    )
+
     /** Which slot an exercise belongs to (null for warm-up / cool-down / library-only items). */
     fun slotOf(id: String): Slot? = chains.entries.firstOrNull { id in it.value }?.key
 

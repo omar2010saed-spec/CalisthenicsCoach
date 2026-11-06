@@ -3,7 +3,9 @@ package com.calisthenics.coach.logic
 import com.calisthenics.coach.data.ExerciseData
 import com.calisthenics.coach.data.Exercise
 import com.calisthenics.coach.data.Kind
+import com.calisthenics.coach.data.SessionType
 import com.calisthenics.coach.data.Slot
+import com.calisthenics.coach.data.Stages
 
 /**
  * Builds a workout from the user's stage, equipment (only what is in the exercise library), session length
@@ -13,9 +15,11 @@ object Generator {
 
     private const val MAX_STRENGTH_SETS = 20
 
-    private val templateA = listOf(Slot.PUSH, Slot.QUAD, Slot.SHOULDER, Slot.ABS, Slot.TRICEPS, Slot.CALF)
-    private val templateB = listOf(Slot.GLUTE, Slot.BACK, Slot.CORE, Slot.HAM, Slot.BICEPS, Slot.LOWBACK)
-    private val templateC = listOf(Slot.PUSH, Slot.QUAD, Slot.CORE, Slot.BACK, Slot.HIP, Slot.ABS, Slot.FOREARM)
+    /** The session type that comes next in the current stage's rotation. */
+    fun nextSessionType(s: AppState): SessionType {
+        val rot = Stages.get(s.stage).rotation
+        return rot[s.workouts.size % rot.size]
+    }
 
     /** True if recent workouts show pain, unusual fatigue or a pain report in the last 3 days. */
     fun recoveryFlag(s: AppState): Boolean {
@@ -70,7 +74,14 @@ object Generator {
             s.stage <= 1 -> 2
             else -> 3
         }
-        val sets = if (tired) (baseSets - 1).coerceAtLeast(1) else baseSets
+        val cycle = Progress.cycleInfo(s)
+        val deload = cycle.deload
+        val sets = when {
+            tired -> (baseSets - 1).coerceAtLeast(1)
+            deload -> (baseSets - 1).coerceAtLeast(2)
+            else -> baseSets
+        }
+        val alternate = cycle.block % 2 == 1
 
         val warmups = listOf("march_in_place", "arm_circles", "hip_circles", "cat_cow", "wrist_rotations")
             .mapNotNull { ExerciseData.get(it) }
@@ -87,12 +98,7 @@ object Generator {
         val coolMinutes = estimateMinutes(cooldowns)
         val budgetSeconds = ((s.sessionMinutes - warmMinutes - coolMinutes).coerceAtLeast(10)) * 60
 
-        val sessionNumber = s.workouts.size
-        val template = when (sessionNumber % 3) {
-            0 -> templateA
-            1 -> templateB
-            else -> templateC
-        }
+        val template = nextSessionType(s).slots
 
         val chosen = ArrayList<PlanItem>()
         val usedIds = HashSet<String>()
@@ -100,10 +106,15 @@ object Generator {
         var totalSets = 0
         for (slot in template) {
             val idx = slotIndex(s, slot)
-            val id = ExerciseData.chains.getValue(slot)[idx]
+            var id = ExerciseData.chains.getValue(slot)[idx]
+            if (alternate) {
+                val alt = ExerciseData.variants[id]
+                if (alt != null && ExerciseData.require(alt).minStage <= s.stage) id = alt
+            }
             if (id in usedIds) continue
             val e = ExerciseData.require(id)
-            val amount = targetFor(s, e)
+            val base = targetFor(s, e)
+            val amount = if (deload && !tired) Math.round(base * 0.8f).coerceAtLeast(1) else base
             val planItem = item(e, sets, amount)
             val cost = estimateSeconds(planItem)
             if (spent + cost > budgetSeconds && chosen.isNotEmpty()) continue

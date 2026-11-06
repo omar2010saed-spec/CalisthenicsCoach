@@ -136,96 +136,11 @@ fun LabeledBlock(title: String, content: @Composable ColumnScope.() -> Unit) {
     }
 }
 
-/**
- * Animated stick-figure illustration drawn locally with Canvas. It is a simplified guide for the movement path,
- * so there are no remote or bundled image files.
- */
-@Composable
-fun StickFigure(anim: Anim, modifier: Modifier = Modifier, animate: Boolean = true) {
-    val transition = rememberInfiniteTransition(label = "figure")
-    val moving by transition.animateFloat(
-        initialValue = 0f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(tween(1500, easing = LinearEasing), RepeatMode.Reverse),
-        label = "t"
-    )
-    val t = if (animate) moving else 0f
-    val body = MaterialTheme.colorScheme.onSurface
-    val accent = MaterialTheme.colorScheme.primary
-    val ring = Amber
-
-    Canvas(modifier = modifier) {
-        val w = size.width
-        val h = size.height
-        fun px(i: Int): Float = anim.a.p[i * 2] + (anim.b.p[i * 2] - anim.a.p[i * 2]) * t
-        fun py(i: Int): Float = anim.a.p[i * 2 + 1] + (anim.b.p[i * 2 + 1] - anim.a.p[i * 2 + 1]) * t
-        fun pt(i: Int) = Offset(px(i) * w, py(i) * h)
-
-        val u = max(1f, minOf(w, h))
-        drawLine(
-            color = body.copy(alpha = 0.25f),
-            start = Offset(0.03f * w, 0.9f * h),
-            end = Offset(0.97f * w, 0.9f * h),
-            strokeWidth = u * 0.012f,
-            cap = StrokeCap.Round
-        )
-        val limb = u * 0.032f
-        val torso = u * 0.042f
-        // torso
-        drawLine(body, pt(1), pt(4), strokeWidth = torso, cap = StrokeCap.Round)
-        // arm
-        drawLine(accent, pt(1), pt(2), strokeWidth = limb, cap = StrokeCap.Round)
-        drawLine(accent, pt(2), pt(3), strokeWidth = limb, cap = StrokeCap.Round)
-        // leg
-        drawLine(body, pt(4), pt(5), strokeWidth = limb, cap = StrokeCap.Round)
-        drawLine(body, pt(5), pt(6), strokeWidth = limb, cap = StrokeCap.Round)
-        // head
-        drawLine(body, pt(0), pt(1), strokeWidth = limb * 0.6f, cap = StrokeCap.Round)
-        drawCircle(accent, radius = u * 0.055f, center = pt(0))
-        anim.bandAt?.let { i ->
-            drawCircle(ring, radius = u * 0.06f, center = pt(i), style = Stroke(width = u * 0.016f))
-        }
-    }
-}
-
-@Composable
-fun ExerciseIllustration(e: Exercise, modifier: Modifier = Modifier, animate: Boolean = true) {
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(18.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-    ) {
-        StickFigure(
-            anim = e.anim,
-            animate = animate,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp)
-        )
-        if (e.equip == Equip.BAND) {
-            Pill(
-                "حلقة مقاومة",
-                color = Amber,
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .padding(10.dp)
-            )
-        }
-    }
-}
-
 @Composable
 fun ExerciseRow(e: Exercise, subtitle: String, onClick: () -> Unit) {
     AppCard(onClick = onClick) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(
-                modifier = Modifier
-                    .size(64.dp)
-                    .clip(RoundedCornerShape(14.dp))
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-            ) {
-                StickFigure(e.anim, Modifier.fillMaxWidth().height(64.dp).padding(4.dp), animate = false)
-            }
+            ExerciseThumb(e, Modifier.size(72.dp))
             Column(modifier = Modifier.weight(1f).padding(horizontal = 12.dp)) {
                 Text(e.ar, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleSmall)
                 Text(e.en, fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)

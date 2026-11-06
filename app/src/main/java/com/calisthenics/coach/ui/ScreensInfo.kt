@@ -126,7 +126,7 @@ fun SettingsScreen(vm: AppViewModel, onBack: () -> Unit) {
 
         AppCard {
             Text("أيام التدريب", fontWeight = FontWeight.Bold)
-            Text("اختر من يومين إلى 5 أيام. يُنصح بـ 3 أيام مع يوم راحة بين كل تمرينين.", fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
+            Text("اختر من يومين إلى 5 أيام. الموصى به لمرحلتك ${com.calisthenics.coach.data.Stages.get(s.stage).trainingDays} أيام، مع راحة بين كل تمرينين.", fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
             Spacer8()
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 DAY_NAMES_SAT0.forEachIndexed { i, n ->

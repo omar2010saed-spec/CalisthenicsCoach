@@ -109,7 +109,8 @@ fun WorkoutScreen(vm: AppViewModel, session: WorkoutSession, onExit: () -> Unit)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            ExerciseIllustration(e, Modifier.fillMaxWidth().height(190.dp), animate = !session.paused)
+            ExerciseIllustration(e, Modifier.fillMaxWidth(), animate = !session.paused)
+            VideoButton(e, Modifier.fillMaxWidth())
             Text(e.ar, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
             Text(e.en, fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
 

@@ -85,7 +85,7 @@ internal val upperExercises: List<Exercise> = listOf(
     // ---------------- الأكتاف ----------------
     ex(
         "band_ext_rot", "Band External Rotation", "دوران خارجي للكتف بالحلقة", Muscle.SHOULDERS, "الكفة المدورة، أعلى الظهر", 1, 1, 2, 12, 45,
-        Anim(Poses.ARMS_FRONT, Poses.CURL_UP, bandAt = Pose.HAND),
+        Anim(Poses.ROT_A, Poses.ROT_B, bandAt = Pose.HAND),
         "قف وضع حلقة المقاومة حول الرسغين، المرفقان ملتصقان بالجانبين وبزاوية 90° والساعدان للأمام.",
         listOf(
             "أبقِ المرفقين ملتصقين بالجسم.",
@@ -98,7 +98,7 @@ internal val upperExercises: List<Exercise> = listOf(
     ),
     ex(
         "band_overhead_pullapart", "Band Overhead Pull-apart", "فتح الحلقة فوق الرأس", Muscle.SHOULDERS, "أعلى الظهر، الكتف الخلفي", 2, 2, 3, 10, 60,
-        Anim(Poses.ARMS_UP, Poses.ARMS_OUT, bandAt = Pose.HAND),
+        Anim(Poses.OVH_A, Poses.OVH_B, bandAt = Pose.HAND),
         "قف باستقامة، أمسك حلقة المقاومة بكلتا اليدين بعرض الكتفين ورفع الذراعين أمامك.",
         listOf(
             "ارفع الذراعين لأعلى قليلًا فوق مستوى الصدر.",
@@ -206,7 +206,7 @@ internal val upperExercises: List<Exercise> = listOf(
     ),
     ex(
         "band_pullapart", "Band Pull-apart", "فتح الحلقة للخلف", Muscle.BACK, "الكتف الخلفي، المعينية", 1, 1, 3, 12, 45,
-        Anim(Poses.ARMS_FRONT, Poses.ARMS_OUT, bandAt = Pose.HAND),
+        Anim(Poses.ARMS_FRONT, Poses.PULL_B, bandAt = Pose.HAND),
         "قف باستقامة وأمسك حلقة المقاومة بيدين بعرض الكتفين والذراعان ممدودتان أمامك بمستوى الصدر.",
         listOf(
             "اسحب الحلقة للجانبين بتقريب لوحَي الكتف من بعضهما.",

@@ -57,7 +57,7 @@ internal val lowerExercises: List<Exercise> = listOf(
     ),
     ex(
         "jump_squat", "Jump Squat", "سكوات بالقفز", Muscle.QUADS, "الأرداف، السمانة", 4, 4, 3, 8, 90,
-        Anim(Poses.SQUAT_DOWN, Poses.CALF_UP),
+        Anim(Poses.SQUAT_DOWN, Poses.JUMP),
         "ابدأ بوضع السكوات الربع نزولًا والذراعان أمامك لاستعداد القفز.",
         listOf(
             "اقفز عموديًا بأقصى سرعة مع مد الورك والركبتين.",
@@ -111,7 +111,7 @@ internal val lowerExercises: List<Exercise> = listOf(
     ),
     ex(
         "slider_curl", "Towel Hamstring Curl", "ثني الفخذ الخلفي بالمنشفة", Muscle.HAMSTRINGS, "الأرداف", 3, 3, 3, 6, 75,
-        Anim(Poses.BRIDGE_UP, Poses.BRIDGE_DOWN),
+        Anim(Poses.BRIDGE_EXT, Poses.BRIDGE_UP),
         "استلقِ على الظهر على أرض ملساء (بلاط أو باركيه) وضع كعبيك على منشفة صغيرة أو جورب، وارفع الحوض في وضع الجسر.",
         listOf(
             "من وضع الجسر ابعد الكعبين ببطء عن الجسم ثم افرد الركبتين جزئيًا.",

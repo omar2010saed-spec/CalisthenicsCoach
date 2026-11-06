@@ -17,7 +17,17 @@ data class ReadinessItem(
 
 data class Milestone(val title: String, val achieved: Boolean)
 
+data class CycleInfo(val weekNumber: Int, val block: Int, val weekInBlock: Int, val deload: Boolean)
+
 object Progress {
+
+    /** Training is organised in 4-week blocks counted from the first completed workout; week 4 is a lighter "deload" week. */
+    fun cycleInfo(s: AppState): CycleInfo {
+        val first = s.workouts.minOfOrNull { it.dateKey }
+        val weeks = if (first == null) 0 else (Dates.daysBetween(first, Dates.todayKey()) / 7).coerceAtLeast(0)
+        val inBlock = weeks % 4 + 1
+        return CycleInfo(weeks + 1, weeks / 4, inBlock, inBlock == 4)
+    }
 
     // ---------------------------------------------------------------- applying a finished workout
 
@@ -30,7 +40,7 @@ object Progress {
 
         if (record.pain && record.dateKey !in pain) pain.add(record.dateKey)
 
-        val frozen = record.pain || record.fatigue
+        val frozen = record.pain || record.fatigue || cycleInfo(s).deload
 
         for (r in record.results) {
             val e = ExerciseData.get(r.id) ?: continue
@@ -50,7 +60,22 @@ object Progress {
             val complete = r.setsDone >= r.setsPlanned
 
             when {
-                complete && record.feedback == 0 -> targets[r.id] = min(cap, current + step)
+                complete && record.feedback == 0 -> {
+                    var promoted = false
+                    if (current >= cap) {
+                        // Mastered this version: move to the next harder one if the current stage allows it.
+                        val slot = ExerciseData.slotOf(r.id)
+                        if (slot != null) {
+                            val idx = Generator.slotIndex(s, slot)
+                            if (ExerciseData.chains.getValue(slot)[idx] == r.id && idx < ExerciseData.maxIndex(slot, s.stage)) {
+                                slotIdx[slot.name] = idx + 1
+                                targets.remove(r.id)
+                                promoted = true
+                            }
+                        }
+                    }
+                    if (!promoted) targets[r.id] = min(cap, current + step)
+                }
                 !complete || record.feedback == 2 -> {
                     if (current > floor) {
                         targets[r.id] = max(floor, current - step)

@@ -2,16 +2,12 @@ package com.calisthenics.coach.data
 
 object Stages {
 
-    private const val REST = "راحة"
-
-    private fun week(vararg days: String): List<String> = days.toList()
-
     val all: List<Stage> = listOf(
         Stage(
             number = 1,
             name = "مبتدئ تمامًا",
             summary = "بناء العادة وتعلم الشكل الصحيح للحركات الأساسية (حائط، ركبتان، سكوات، بلانك) بحجم تدريب خفيف.",
-            schedule = week("تمرين كامل للجسم (أ)", REST, "تمرين كامل للجسم (ب)", REST, "تمرين كامل للجسم (ج)", "مشي خفيف أو إطالة", REST),
+            rotation = listOf(SessionType.FULL_A, SessionType.FULL_B, SessionType.FULL_C),
             trainingDays = 3,
             setsRange = "2 إلى 3 مجموعات",
             rest = "60 إلى 90 ثانية بين المجموعات",
@@ -35,7 +31,7 @@ object Stages {
             number = 2,
             name = "مبتدئ",
             summary = "الانتقال من ضغط الركبتين إلى الضغط العادي، وتقوية الجذع والأرداف والورك بحجم معتدل.",
-            schedule = week("تمرين كامل للجسم (أ)", REST, "تمرين كامل للجسم (ب)", REST, "تمرين كامل للجسم (ج)", "مشي خفيف أو إطالة", REST),
+            rotation = listOf(SessionType.FULL_A, SessionType.FULL_B, SessionType.FULL_C),
             trainingDays = 3,
             setsRange = "3 مجموعات",
             rest = "60 إلى 90 ثانية",
@@ -59,7 +55,7 @@ object Stages {
             number = 3,
             name = "متوسط",
             summary = "إدخال ضغط بمقاومة الحلقة، وضغط الباي للأكتاف، وتمارين الأرداف أحادية الجانب.",
-            schedule = week("دفع + ساقان", REST, "جذع + ظهر + أرداف", REST, "تمرين كامل للجسم", "مشي خفيف أو إطالة", REST),
+            rotation = listOf(SessionType.FULL_A, SessionType.FULL_B, SessionType.FULL_C),
             trainingDays = 3,
             setsRange = "3 مجموعات",
             rest = "75 إلى 90 ثانية",
@@ -83,7 +79,7 @@ object Stages {
             number = 4,
             name = "فوق المتوسط",
             summary = "ضغط الماسة وتمارين القفز الخفيف وتمارين الرجل الواحدة وتثبيتات البطن الأصعب.",
-            schedule = week("دفع (صدر + أكتاف + ترايسبس)", "ساقان + أرداف", REST, "جذع + ظهر", "تمرين كامل للجسم", REST, REST),
+            rotation = listOf(SessionType.PUSH, SessionType.LEGS, SessionType.PULL, SessionType.MIX),
             trainingDays = 4,
             setsRange = "3 مجموعات",
             rest = "75 إلى 120 ثانية",
@@ -107,7 +103,7 @@ object Stages {
             number = 5,
             name = "متقدم",
             summary = "تمارين الرجل الواحدة المساعدة، ضغط الرامي، وتثبيتات الوقوف على اليدين بمواجهة الحائط.",
-            schedule = week("دفع + أكتاف", "ساقان", REST, "جذع + ظهر", "دفع + ساقان خفيف", REST, REST),
+            rotation = listOf(SessionType.PUSH, SessionType.LEGS, SessionType.PULL, SessionType.MIX),
             trainingDays = 4,
             setsRange = "3 مجموعات",
             rest = "90 إلى 120 ثانية",
@@ -131,7 +127,7 @@ object Stages {
             number = 6,
             name = "مهارات كاليسثينكس متقدمة",
             summary = "تعلّم المهارات المتقدمة التي يمكن تدريبها بأمان على الأرض فقط، مع حدود واضحة للمهارات التي تحتاج معدات.",
-            schedule = week("مهارة + دفع", "ساقان + جذع", REST, "مهارة + أكتاف", "ساقان + جذع", REST, REST),
+            rotation = listOf(SessionType.PUSH, SessionType.LEGS, SessionType.PULL, SessionType.MIX),
             trainingDays = 4,
             setsRange = "3 مجموعات (جودة قبل الكمية)",
             rest = "90 إلى 120 ثانية",
